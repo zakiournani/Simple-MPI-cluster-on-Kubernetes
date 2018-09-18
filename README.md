@@ -15,7 +15,7 @@ pair per node).
 This Dockerfile could be used to run both master and slave nodes, the difference would be at the level of the Entrypoint.
 
 In order to connect master to slaves through Kubernetes cluster, the solution here was to create a service per slave node,
-the service would assure the nodes recognition from the master using kubernetes DNS. Statefullsets are used to give an identity to every deployment.
+the service would assure the nodes recognition from the master using kubernetes DNS. Statefullset is used to give an identity to the master deployment.
 
 ## How to run
 1. Build the Master and worker image based on the base image here present ( you could use the same image for both and use a entrypoint script that executes differently according to the node type).
