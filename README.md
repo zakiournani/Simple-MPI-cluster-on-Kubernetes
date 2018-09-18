@@ -18,6 +18,10 @@ In order to connect master to slaves through Kubernetes cluster, the solution he
 the service would assure the nodes recognition from the master using kubernetes DNS. Statefullsets are used to give an identity to every deployment.
 
 ## How to run
-1. Build the Master and worker image based on the base image here present ( you could use the same image for both and use a entrypoint script that executes differently according to the node type)
+1. Build the Master and worker image based on the base image here present ( you could use the same image for both and use a entrypoint script that executes differently according to the node type).
 
-2.
+2. Change Values on servicemaster.yaml and serviceworker.yaml before you create the services/deployments (to create many workers and no to create a file for every worker, it's possible to define a template using Helm)
+
+3. kubectl create -f <file.yaml>
+
+4. Depending on you entrypoint, the master could initiate a preset job (that was the usecase in my context), or it could be deployed as a published service that recieves queries and launches executions (many things are imaginable in this area using replicas and proxies ...).
