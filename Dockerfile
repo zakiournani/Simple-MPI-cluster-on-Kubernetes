@@ -23,7 +23,6 @@ ADD id_rsa /root/.ssh
 RUN chmod  600 /root/.ssh/id_rsa
 ADD id_rsa.pub /root/.ssh
 ADD authorized_keys /root/.ssh
-RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
 RUN mkdir -p /mpi 
 WORKDIR /mpi
