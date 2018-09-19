@@ -10,19 +10,26 @@ RUN echo 'root:root' |chpasswd
 
 RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
+RUN apt-get install -y python-pip gfortran
 
+RUN cd /tmp && wget https://github.com/jplana/python-etcd/archive/0.4.1.tar.gz && \
+    tar xvfz 0.4.1.tar.gz && cd python-etcd-0.4.1 && pip install .
+
+# MPICH3 Install
 RUN cd /tmp && wget http://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz && \
     tar xvfz mpich-3.1.4.tar.gz && cd mpich-3.1.4 && ./configure --prefix=/tmp/mpich && \
     make && make VERBOSE=1 && make install
 
-ENV PATH $PATH:/tmp/mpich/bin
+#RUN apt-get install -y telnet curl
 
+ENV PATH $PATH:/tmp/mpich/bin
+RUN mkdir -p /root/.ssh
 ADD id_rsa /root/.ssh
 RUN chmod  600 /root/.ssh/id_rsa
 ADD id_rsa.pub /root/.ssh
 ADD authorized_keys /root/.ssh
+RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
 RUN mkdir -p /mpi 
 WORKDIR /mpi
