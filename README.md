@@ -9,8 +9,7 @@ A simple way to deploy  a MPI cluster on Kubernetes
 ## Deployment
 
 As MPI communication is based on SSH, Node images need to run sshd. To achieve passwordless communication between nodes, you 
-should generate a key pair and share it with all node (only in a provate LAN context, either way you will need to generate a unique
-pair per node).
+should generate a key pair and share it with all node (only in a private LAN context, either way, you will need to generate a unique pair per node).
 
 This Dockerfile could be used to run both master and slave nodes, the difference would be at the level of the Entrypoint.
 
