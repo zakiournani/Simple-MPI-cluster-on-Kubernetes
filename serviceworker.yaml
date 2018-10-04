@@ -1,30 +1,38 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: worker
-spec:
-   selector:
-     matchLabels:
-       app: worker
-   template:
-     metadata:
-       labels:
-         app: worker
-     spec:
-       containers:
-       - name: worker
-         image: <Your modified image>
-         ports:
-         - containerPort: 22
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: serviceworker
+  labels:
+    app: worker
 spec:
+  ports:
+  - port: 22
+    name: worker
+  clusterIP: None
   selector:
     app: worker
-  ports:
-  - protocol: TCP
-    port: 22
-    targetPort: 22
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: worker
+  labels:
+    app: worker
+spec:
+  serviceName: "serviceworker"
+  selector:
+    matchLabels:
+      app: worker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker
+        image: <Your image>
+        ports:
+        - containerPort: 22
+          name: worker

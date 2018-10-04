@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+   selector:
+     matchLabels:
+       app: worker
+   template:
+     metadata:
+       labels:
+         app: worker
+     spec:
+       containers:
+       - name: worker
+         image: <Your modified image>
+         ports:
+         - containerPort: 22
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: serviceworker
+spec:
+  selector:
+    app: worker
+  ports:
+  - protocol: TCP
+    port: 22
+    targetPort: 22
